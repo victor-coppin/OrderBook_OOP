@@ -12,7 +12,7 @@ Should have the following attributes:
 """
 
 class Task:
-
+    id_counter = 0
     __slots__ = ['description','workload','programmer','__done_status','id'] #avoid dynamic creation of attributes
 
     def __init__(self,task_description,estimated_hours_for_completion,programmer_assigned_name):
@@ -20,10 +20,8 @@ class Task:
         self.workload = estimated_hours_for_completion
         self.programmer = programmer_assigned_name
 
-
+        type(self).id_counter += 1
         self.__done_status = "NOT_FINISHED"
+        self.id = type(self).id_counter
 
-x = Task("ajout metaclass",29,"victor")
-print(x.description)
-x.prenom = "coppin"
-print(x.prenom)
+
