@@ -12,14 +12,18 @@ Should have the following attributes:
 """
 
 class Task:
-    def __init__(self,task_description,estimated_hours_for_completion,programmer_assigned_name,execution_status):
+
+    __slots__ = ['description','workload','programmer','__done_status','id'] #avoid dynamic creation of attributes
+
+    def __init__(self,task_description,estimated_hours_for_completion,programmer_assigned_name):
         self.description = task_description
-        self.estimated_hours = estimated_hours_for_completion
-        self.programmer_name = programmer_assigned_name
-        self.done_status = execution_status
-        # need to think about uniq id
-    pass
+        self.workload = estimated_hours_for_completion
+        self.programmer = programmer_assigned_name
 
-x = Task("hello", 10, "victor", "NOT FINISHED")
-print(x)
 
+        self.__done_status = "NOT_FINISHED"
+
+x = Task("ajout metaclass",29,"victor")
+print(x.description)
+x.prenom = "coppin"
+print(x.prenom)
