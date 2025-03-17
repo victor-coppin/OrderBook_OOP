@@ -22,10 +22,16 @@ class Task:
 
         type(self).__id_counter += 1 # incrementation of the id_counter
         self.__done_status = "NOT_FINISHED"
-        self.id = type(self).__id_counter
+        self.id = type(self).__id_counter #type(self) is used in case class name is changed : avoid task.id
     """
     Methods
     """
+    @classmethod # class method that allow to use the following method without reference to an instance.
+    def number_of_tasks(cls):
+        return cls.__id_counter
+
+
+
     def __str__(self):
         return str(self.id) + ": " + self.description + " (" + str(self.workload) + "hours)," + " programmer " + self.programmer
 """
@@ -36,8 +42,8 @@ should count the number of tasks with the status NOT_FINISHED
 """
 x = Task("program hello world",3,"Eric")
 print(x)
-
-
+print(Task.number_of_tasks())
+print(x.number_of_tasks())
 
 
 
