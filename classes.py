@@ -3,29 +3,38 @@
 """
 Class Task
 Models a single task in a software company's list of tasks.
-Should have the following attributes:
- - description
- - an estimated number of hours for completion
- - the name of the programmer assigned to it
- - a status field to indicate if it is finished
- - a unique identifier
 """
 
 class Task:
     __id_counter = 0 # class attribute that will be used to create a unique ID
     __slots__ = ['description','workload','programmer','__done_status','id'] #avoid dynamic creation of attributes
 
-    def __init__(self,task_description,programmer_assigned_name,estimated_hours_for_completion):
-        self.description = task_description
-        self.workload = estimated_hours_for_completion
-        self.programmer = programmer_assigned_name
+    def __init__(self, description, programmer, workload):
+        """
+        Task to complete
+        should provide a short description, your name and the estimated hours for completion(int).
+        """
+        self.add_order(description,programmer, workload)
+
+    def add_order(self,description,programmer, workload):
+        if len(description.split()) < 20:
+            self.description = description
+        else:
+            raise ValueError("Description is too long ! Remember Agile best practice and keep it short.")
+
+        if type(workload) == int:
+            self.workload = workload
+        else:
+            raise ValueError("workload should be an integer")
+
+        self.programmer = programmer
         type(self).__id_counter += 1 # incrementation of the id_counter
         self.id = type(self).__id_counter #type(self) is used in case class name is changed:i.e. avoid task.id
         self.__done_status = "Not_Finished"
+
     @property
     def is_finished(self): #getter that return a boolean by compare the __done_status's value
         return  self.__done_status == "Finished"
-
 
     """
     Methods
@@ -39,13 +48,8 @@ class Task:
 
     def __str__(self):
         return str(self.id) + ": " + self.description + " (" + str(self.workload) + "hours)," + " programmer " + self.programmer
-"""
-Change the behavior of the id by made it private with a get method 
-be carefully to avoid decrease of the id_counter : if one task is complete, counter //
-shouldn't decrease --> if a task is complete the function to count the number of tasks //
-should count the number of tasks with the status NOT_FINISHED
-"""
-x = Task("program hello world","Eric",3)
+
+x = Task("long to read for a card","Eric",4)
 print(x)
 print(Task.number_of_tasks())
 print(x.number_of_tasks())
@@ -53,4 +57,6 @@ print(x.is_finished)
 x.mark_finished()
 print(x.is_finished)
 print(x.id)
+w = Task("long to read for a card","Eric",3)
+print(w)
 
