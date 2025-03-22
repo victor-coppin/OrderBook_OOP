@@ -35,7 +35,6 @@ class Task:
     def description(self):
         return self.__description
 
-
     @property
     def programmer(self):
         return self.__programmer
@@ -46,6 +45,11 @@ class Task:
     @property
     def id(self):
         return self.__id
+    @id.setter #used for the unit test
+    def id(self,x):
+        self.__id = x
+
+
 
     """
     Class Methods
@@ -63,8 +67,6 @@ class Task:
 
     def mark_finished(self):
         self.__done_status = "FINISHED"
-
-
 
     def __str__(self):
         return (str(self.id) + ": " + self.description + " (" + str(self.workload) + " hours),"
