@@ -45,9 +45,7 @@ class Task:
     @property
     def id(self):
         return self.__id
-    @id.setter #used for test unit only
-    def id(self,x):
-        self.__id = x
+
 
 
     """
@@ -66,8 +64,6 @@ class Task:
 
     def mark_finished(self):
         self.__done_status = "FINISHED"
-    def mark_not_finished(self): #for unit test only
-        self.__done_status = "NOT FINISHED"
 
     def __str__(self):
         return (str(self.id) + ": " + self.description + " (" + str(self.workload) + " hours),"
