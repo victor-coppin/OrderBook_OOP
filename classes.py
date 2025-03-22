@@ -2,7 +2,7 @@
 
 """
 Class Task
-Models a single task in a software company's list of tasks.
+Models a single task in a software company's list of the tasks.
 """
 
 class Task:
