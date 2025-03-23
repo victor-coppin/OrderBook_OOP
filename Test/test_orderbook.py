@@ -35,7 +35,7 @@ def test_task_print_attributes(capsys,monkeypatch):
 def test_print_task(monkeypatch):
     t1 = Task("program hello world", "Eric", 3)
     monkeypatch.setattr(t1,"_Task__id",1)
-    monkeypatch.setattr(t1,"_Task__done_status","Not Finished")
+    monkeypatch.setattr(t1,"_Task__done_status","NOT FINISHED")
     assert str(t1) == "1: program hello world (3 hours), programmer Eric NOT FINISHED"
 
 def test_print_is_finished(monkeypatch):
