@@ -46,19 +46,15 @@ class Task:
     def id(self):
         return self.__id
 
-
-
     """
     Class Methods
     """
     @classmethod # class method that allow to use the following method without reference to an instance.
     def number_of_tasks(cls):
         return cls.__id_generator
-
     """
     Instance Methods 
     """
-
     def is_finished(self):  # getter that return a boolean by compare the __done_status's value
         return self.__done_status == "FINISHED"
 
@@ -84,6 +80,7 @@ class OrderBook:
 
     def all_orders(self):
         return self.__orders
+
     def programmers(self):
         programmers_list = []
         for order_listed in self.__orders:
@@ -92,6 +89,8 @@ class OrderBook:
         return programmers_list
 
 
+
+"""
 orders = OrderBook()
 orders.add_order("program webstore", "Adele", 10)
 orders.add_order("program mobile app for workload accounting", "Eric", 25)
@@ -102,10 +101,7 @@ for order in orders.all_orders():
 
 for programmer in orders.programmers():
     print(programmer)
-
-
-
-
+"""
 
 
 
