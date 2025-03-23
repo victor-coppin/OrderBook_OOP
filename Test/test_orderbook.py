@@ -5,7 +5,6 @@ These unit test are used to test each behavior expected in the project
 
 import sys
 
-from jedi.common import monkeypatch
 
 sys.path +=['../Order_Book']
 

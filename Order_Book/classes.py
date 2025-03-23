@@ -65,19 +65,44 @@ class Task:
         return (str(self.id) + ": " + self.description + " (" + str(self.workload) + " hours),"
                 + " programmer " + self.programmer +" "+self.__done_status)
 
+"""
+Class OrderBook
+The orderbook that used to store, add and query tasks 
+"""
+
+"""
+To do : try create nested dictionary class for the OrderBook
+or flat structure (normal dictionnary) with a specifique feed that will allow to filter.
+
+"""
+
+
+
 
 class OrderBook:
+    """
+    This class is based on a custom dictionary indexed by keys.
+    The dictionary store the task with the task's id as the keys : {T1.id :t1}
+    Example:
+    *******
+    orders = OrderBook()
+    orders.add_order("program webstore", "Adele", 10)
+    print(orders.orders_dic[1])
+    return 1: program webstore (10 hours), programmer Adele NOT FINISHED
+    """
     def __init__(self):
-        self.__orders = []
-
+        self.orders_dic = {} #create a dictionary database to store the tasks instances
 
     """
     Methods 
     """
     def add_order(self, description, programmer, workload):
         task = Task(description, programmer, workload)
-        self.__orders.append(task)
+        self.orders_dic[task.id] = task
 
+
+
+    """
     def all_orders(self):
         return self.__orders
 
@@ -87,7 +112,7 @@ class OrderBook:
             if order_listed.programmer not in programmers_list:
                 programmers_list.append(order_listed.programmer)
         return programmers_list
-
+    """
 
 
 """
@@ -103,8 +128,11 @@ for programmer in orders.programmers():
     print(programmer)
 """
 
-
-
+orders = OrderBook()
+orders.add_order("program webstore", "Adele", 10)
+print(orders.orders_dic)
+print(list(orders.orders_dic.items()))
+print(orders.orders_dic[1])
 
 
 
