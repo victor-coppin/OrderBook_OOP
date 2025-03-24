@@ -4,7 +4,7 @@
 Class Task
 Models a single task in a software company's list of the tasks.
 """
-
+#  [MermaidChart: fc25ec32-0aab-42e4-811c-b68f888f0d09]
 class Task:
     __id_generator = 0 # class attribute that will be used to create a unique ID
     """__slots__ = ['description','workload','programmer','__done_status','id'] #avoid dynamic creation of attributes"""
