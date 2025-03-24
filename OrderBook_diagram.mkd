@@ -1,0 +1,15 @@
+```Mermaid
+classDiagram
+class Task{
+    -int id
+    -string description : lenth <20
+    -string programmer
+    -int workload
+    -int id_generator : "increment itself"
+    -string done_status : hard coded "NOT FINISHED"
+    +number_of_tasks(cls) int : "class method used for id assignement"
+    +is_finished() boolean 
+    +mark_finished() string
+    +__str__() string
+     }
+```
