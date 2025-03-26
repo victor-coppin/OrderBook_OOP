@@ -1,5 +1,6 @@
 #Script containing the classes used in the project
 
+from collections import UserDict
 """
 Class Task
 Models a single task in a software company's list of the tasks.
@@ -79,23 +80,14 @@ or flat structure (normal dictionnary) with a specifique feed that will allow to
 
 
 
-class OrderBook:
-    """
-    This class is based on a custom dictionary indexed by keys.
-    The dictionary store the task with the task's id as the keys : {T1.id :t1}
-    Example:
-    *******
-    orders = OrderBook()
-    orders.add_order("program webstore", "Adele", 10)
-    print(orders.orders_dic[1])
-    return 1: program webstore (10 hours), programmer Adele NOT FINISHED
-    """
-    def __init__(self):
-        self.orders_dic = {} #create a dictionary database to store the tasks instances
+class OrderBook(Task):
+    orders_dic = {}
+    def __init__(self, description, programmer, workload):
+        super().__init__(description, programmer, workload)
+        super.__description = description
+        self.__programmer = programmer
+        self.__workload = workload
 
-    """
-    Methods 
-    """
     def add_order(self, description, programmer, workload):
         task = Task(description, programmer, workload)
         self.orders_dic[task.id] = task
