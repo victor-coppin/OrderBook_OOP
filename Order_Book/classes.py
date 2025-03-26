@@ -96,9 +96,6 @@ class OrderBook(Task):
 
 
     """
-    def all_orders(self):
-        return self.__orders
-
     def programmers(self):
         programmers_list = []
         for order_listed in self.__orders:
