@@ -1,11 +1,8 @@
-#Script containing the classes used in the project
-
-from collections import UserDict
 """
 Class Task
 Models a single task in a software company's list of the tasks.
 """
-#  [MermaidChart: fc25ec32-0aab-42e4-811c-b68f888f0d09]
+
 class Task:
     __id_generator = 0 # class attribute that will be used to create a unique ID
     """__slots__ = ['description','workload','programmer','__done_status','id'] #avoid dynamic creation of attributes"""
@@ -71,15 +68,7 @@ Class OrderBook
 The orderbook that used to store, add and query tasks 
 """
 
-"""
-To do : try create nested dictionary class for the OrderBook
-or flat structure (normal dictionnary) with a specifique feed that will allow to filter.
-
-"""
-
-
-
-
+#  [MermaidChart: fc25ec32-0aab-42e4-811c-b68f888f0d09]
 class OrderBook(Task):
     def __init__(self):
         super().__init__(description="add description", programmer="add your name",workload=0)
@@ -92,20 +81,6 @@ class OrderBook(Task):
     def all_orders(self):
         return self.order_dictionary.values()
 
-
-
-
-    """
-    def programmers(self):
-        programmers_list = []
-        for order_listed in self.__orders:
-            if order_listed.programmer not in programmers_list:
-                programmers_list.append(order_listed.programmer)
-        return programmers_list
-    """
-
-
-
 orders = OrderBook()
 orders.add_order("program webstore", "Adele", 10)
 orders.add_order("program mobile app for workload accounting", "Eric", 25)
@@ -113,8 +88,7 @@ orders.add_order("program app for practising mathematics", "Adele", 100)
 for order in orders.all_orders():
     print(order)
 print(orders.order_dictionary)
-# for programmer in orders.programmers():
-#     print(programmer)
+
 
 
 
