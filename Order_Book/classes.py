@@ -17,7 +17,7 @@ class Task:
         """
 
         if len(description.split()) < 20:
-            self.__description = description
+             self.__description = description
         else:
             raise ValueError("Description is too long ! Remember Agile best practice and keep it short.")
 
@@ -81,16 +81,17 @@ or flat structure (normal dictionnary) with a specifique feed that will allow to
 
 
 class OrderBook(Task):
-    orders_dic = {}
-    def __init__(self, description, programmer, workload):
-        super().__init__(description, programmer, workload)
-        super.__description = description
-        self.__programmer = programmer
-        self.__workload = workload
-
+    def __init__(self):
+        super().__init__(description="add description", programmer="add your name",workload=0)
+        self.order_dictionary = {}
     def add_order(self, description, programmer, workload):
-        task = Task(description, programmer, workload)
-        self.orders_dic[task.id] = task
+        order = Task(description, programmer, workload)
+        self.order_dictionary[(order.id,order.programmer)] = order
+        return order
+
+    def all_orders(self):
+        return self.order_dictionary.values()
+
 
 
 
@@ -107,25 +108,16 @@ class OrderBook(Task):
     """
 
 
-"""
+
 orders = OrderBook()
 orders.add_order("program webstore", "Adele", 10)
 orders.add_order("program mobile app for workload accounting", "Eric", 25)
 orders.add_order("program app for practising mathematics", "Adele", 100)
-
 for order in orders.all_orders():
     print(order)
-
-for programmer in orders.programmers():
-    print(programmer)
-"""
-
-orders = OrderBook()
-orders.add_order("program webstore", "Adele", 10)
-print(orders.orders_dic)
-print(list(orders.orders_dic.items()))
-print(orders.orders_dic[1])
-
+print(orders.order_dictionary)
+# for programmer in orders.programmers():
+#     print(programmer)
 
 
 
