@@ -5,10 +5,10 @@ These unit test are used to test each behavior expected in the project
 
 import sys
 
-
 sys.path +=['../Order_Book']
 
 from classes import Task
+from classes import OrderBook
 
 def test_task_print_attributes(capsys,monkeypatch):
     """
@@ -46,6 +46,23 @@ def test_print_is_not_finished():
     t1 = Task("program hello world", "Eric", 3)
     t1.mark_finished()
     assert t1.is_finished() is True
+
+# def test_order_book(monkeypatch):
+#     orders = OrderBook()
+#     orders.add_order("program webstore", "Adele", 10)
+#     orders.add_order("program mobile app for workload accounting", "Eric", 25)
+#     orders.add_order("program app for practising mathematics", "Adele", 100)
+#     for order in orders.all_orders():
+#          print(order)
+#     assert orders.order_dictionary == {
+#         (1, 'Adele'): [
+#             ("program webstore", 10),
+#             ("program app for practising mathematics", 100)
+#         ],
+#         "Eric": [
+#             ("program mobile app for workload accounting", 25)
+#         ]
+#     }
 
 
 
