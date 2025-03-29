@@ -1,10 +1,10 @@
 import sys
 import time
-from classes import OrderBook
+from classes import OrderBook,Task
 
 if __name__ == "__main__":
     orders = OrderBook()
-
+    Task.id_generator_to_zero()
     while True:
         print(
         "******* Main_commands ********\n"
@@ -48,10 +48,13 @@ if __name__ == "__main__":
             if len(orders.orderID_finished) == 0:
                 for order in orders.all_orders():
                     print(order)
+                    time.sleep(2)
             else:
                 not_finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_not_finished]
                 for order in not_finished_tasks:
                     print(order )
+                    time.sleep(2)
+
         elif command == "4":
             id_num = int(input("id: "))
             orders.mark_finished(id_num)
