@@ -74,3 +74,19 @@ def test_order_book_print_all_unique_programmer(capsys,monkeypatch):
     assert (capture_print_output.out ==
         ("Adele\n"
          "Eric\n"))
+
+def tes_order_book_mark_finished(capsys):
+    orders = OrderBook()
+    orders.add_order("program webstore", "Adele", 10)
+    orders.add_order("program mobile app for workload accounting", "Eric", 25)
+    orders.add_order("program app for practising mathematics", "Adele", 100)
+    orders.mark_finished(1)
+    orders.mark_finished(2)
+    for order in orders.all_orders():
+        print(order)
+    capture_print_output = capsys.readouterr()
+    assert (capture_print_output.out ==(
+        "1: program webstore (10 hours), programmer Adele FINISHED\n"
+        "2: program mobile app for workload accounting (25 hours), programmer Eric FINISHED\n"
+        "3: program app for practising mathematics (100 hours), programmer Adele NOT FINISHED\n")
+                  )

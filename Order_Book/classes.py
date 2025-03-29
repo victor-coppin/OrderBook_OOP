@@ -74,25 +74,35 @@ class OrderBook(Task):
     def add_order(self, description, programmer, workload):
         order = Task(description, programmer, workload)
         self.order_dictionary[order.id_number] = order
-        self.order_dictionary_programmer[programmer] = []
-        self.order_dictionary_programmer[order.programmer].append((order.id_number,order.description, order.workload))
+        if programmer not in self.order_dictionary_programmer.keys():
+            self.order_dictionary_programmer[programmer] = [order.id_number]#if programmer not exists then add it
+            # and create a list of one element order.id_number
+        else:
+            self.order_dictionary_programmer[programmer].append(order.id_number)
+            # self.order_dictionary_programmer.setdefault(programmer, []).append((order.id_number,order.description, order.workload))
         return order
 
     def __str__(self,programmer_orders = False):
         return super().__str__()
+
     def all_orders(self):
         return self.order_dictionary.values()
 
     def programmer(self):
         return self.order_dictionary_programmer.keys()
-    # def programmer_task(self):
-    #         str()self.order_dictionary_programmer.keys()
+    def programmers_list_tasks(self):
+        return  self.order_dictionary_programmer
+    def mark_finished(self,order_id):
+        self.order_dictionary[order_id].mark_finished()
 
 orders = OrderBook()
 orders.add_order("program webstore", "Adele", 10)
 orders.add_order("program mobile app for workload accounting", "Eric", 25)
 orders.add_order("program app for practising mathematics", "Adele", 100)
-for programmer in orders.programmer():
-    print(programmer)
+for order in orders.all_orders ():
+    print(order)
+orders.mark_finished(1)
+orders.mark_finished(2)
 
-
+for order in orders.all_orders ():
+    print(order)
