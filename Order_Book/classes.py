@@ -78,7 +78,9 @@ class OrderBook(Task):
     def __init__(self):
         super().__init__(description="add description", programmer="add your name",workload=0)
         self.order_dictionary = {} #contains all the order's instances with the order.id as a key
-        self.order_dictionary_programmer = {} #contains a tuple that represent tasks for programmers as key
+        self.order_dictionary_programmer = {} #contain the numbers of finished, not-finished, and respective hours to complete
+        self.orderID_finished = [] #list all finished. Filled within the mark_finished method
+        self.orderID_not_finished = []
     def add_order(self, description, programmer, workload):
         order = Task(description, programmer, workload)
         self.order_dictionary[order.id_number] = order
@@ -88,7 +90,6 @@ class OrderBook(Task):
             self.order_dictionary_programmer[programmer][0].append(order.id_number)
             self.order_dictionary_programmer[programmer][2] += 1
             self.order_dictionary_programmer[programmer][4] += workload
-            # self.order_dictionary_programmer.setdefault(programmer, []).append((order.id_number,order.description, order.workload))
         return order
 
     def __str__(self,programmer_orders = False):
@@ -96,7 +97,6 @@ class OrderBook(Task):
 
     def all_orders(self):
         return self.order_dictionary.values()
-
     def programmer(self):
         return self.order_dictionary_programmer.keys()
     def programmers_list_tasks(self):
@@ -112,13 +112,30 @@ class OrderBook(Task):
         self.order_dictionary_programmer[programmer][2] -= 1
         self.order_dictionary_programmer[programmer][3] += workload
         self.order_dictionary_programmer[programmer][4] -= workload
+        self.orderID_finished.append(order_id)
+        self.orderID_not_finished = list(set(self.order_dictionary.keys()) - set(self.orderID_finished))
     def status_of_programmer(self,programmer):
         return tuple(self.order_dictionary_programmer[programmer][1:5])
 
-# orders = OrderBook()
-# orders.add_order("program webstore", "Adele", 10)
-# orders.add_order("program mobile app for workload accounting", "Eric", 25)
-# orders.add_order("program app for practising mathematics", "Adele", 100)
+orders = OrderBook()
+orders.add_order("program webstore", "Adele", 10)
+orders.add_order("program mobile app for workload accounting", "Eric", 25)
+orders.add_order("program app for practising mathematics", "Adele", 100)
+orders.mark_finished(1)
+orders.mark_finished(2)
+print(orders.orderID_not_finished)
+not_finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_not_finished]
+for order in not_finished_tasks:
+    print(order)
+finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_finished]
+for order in finished_tasks:
+    print(order)
+
+
+
+
+
+
 # for order in orders.all_orders ():
 #     print(order)
 # print(orders.programmers_list_tasks())
