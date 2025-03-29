@@ -85,3 +85,7 @@ print(key_of_2)
 list_key = list(inventory.keys_of(2))
 print(list_key)
 #['apple', 'orange'] # the keys_of return the keys for the selected value 2
+
+
+nested_dictionary = {"pays": {"France":["Paris","Lille"]}}
+print(nested_dictionary)
