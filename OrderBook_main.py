@@ -1,10 +1,16 @@
 import sys
 import time
 from classes import OrderBook,Task
-
+#TODO: The script containing the same test code for class objects as shown in the examples as well as the final application program code to test Parts 6 and 7.
+#TODO: add comments
+#TODO: look if need to handle other errors
+#TODO: add part to save the orderbook in jason or other method (add a sub command)
+#TODO: add part to download an orderbook (and update in all dictionary)
+#TODO: recheck all test
+#TODO: recheck all test
 if __name__ == "__main__":
-    orders = OrderBook()
-    Task.id_generator_to_zero()
+    orders = OrderBook() #TODO: add comments
+    Task.id_generator_to_zero() #TODO: add comments
     while True:
         print(
         "******* Main_commands ********\n"

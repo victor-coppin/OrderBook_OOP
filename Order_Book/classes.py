@@ -2,7 +2,7 @@
 Class Task
 Models a single task in a software company's list of the tasks.
 """
-
+#TODO: check the comments (if missing or if not needed)
 class Task:
     __id_generator = 0 # class attribute that will be used to create a unique ID
     """__slots__ = ['description','workload','programmer','__done_status','id'] #avoid dynamic creation of attributes"""
@@ -12,7 +12,7 @@ class Task:
         Task to complete
         should provide a short description, your name and the estimated hours for completion(int).
         """
-
+        # TODO: these test don't seems to work in main program, why ?
         if len(description.split()) < 20:
              self.__description = description
         else:
@@ -24,9 +24,10 @@ class Task:
             raise ValueError("workload should be an integer")
 
         self.__programmer = programmer
-
+        # TODO: add test to ensure the incrementation is ok
         type(self).__id_generator += 1 # incrementation of the id_generator
         self.__id_number = type(self).__id_generator #type(self) is used in case class name is changed:i.e. avoid Task.id
+        # TODO: add test to ensure the status of a task is NOT FINISHED when added
         self.__done_status = "NOT FINISHED" # think if better to stock as a boolean
 
     @property #encapsulation
@@ -83,13 +84,13 @@ class OrderBook(Task):
         self.orderID_not_finished = []
     def add_order(self, description, programmer, workload):
         order = Task(description, programmer, workload)
-        self.order_dictionary[order.id_number] = order
+        self.order_dictionary[order.id_number] = order #TODO: add test to ckeck it fill the dictionary
         if programmer not in self.order_dictionary_programmer.keys():
-            self.order_dictionary_programmer[programmer] = [[order.id_number],0,1,0,workload]
+            self.order_dictionary_programmer[programmer] = [[order.id_number],0,1,0,workload] #TODO: add test to ckeck it fill the dictionary
         else:
-            self.order_dictionary_programmer[programmer][0].append(order.id_number)
-            self.order_dictionary_programmer[programmer][2] += 1
-            self.order_dictionary_programmer[programmer][4] += workload
+            self.order_dictionary_programmer[programmer][0].append(order.id_number) #TODO: add test to ckeck it fill the dictionary
+            self.order_dictionary_programmer[programmer][2] += 1 #TODO: add test to ensure it add one
+            self.order_dictionary_programmer[programmer][4] += workload #TODO: add test to ensure it add one
         return order
 
     def __str__(self,programmer_orders = False):
@@ -102,16 +103,16 @@ class OrderBook(Task):
     def programmers_list_tasks(self):
         programmers_list = {}
         for programmer,info in self.order_dictionary_programmer.items():
-            programmers_list[programmer] = info[0]
+            programmers_list[programmer] = info[0] #TODO: add test to ckeck it fill the dictionary
         return  programmers_list
     def mark_finished(self,order_id):
         self.order_dictionary[order_id].mark_finished()
         programmer = self.order_dictionary[order_id].programmer
         workload = self.order_dictionary[order_id].workload
-        self.order_dictionary_programmer[programmer][1] += 1
-        self.order_dictionary_programmer[programmer][2] -= 1
-        self.order_dictionary_programmer[programmer][3] += workload
-        self.order_dictionary_programmer[programmer][4] -= workload
+        self.order_dictionary_programmer[programmer][1] += 1 #TODO: add test to ensure it add one
+        self.order_dictionary_programmer[programmer][2] -= 1 #TODO: add test to ensure it minus one
+        self.order_dictionary_programmer[programmer][3] += workload #TODO: add test
+        self.order_dictionary_programmer[programmer][4] -= workload #TODO: add test
         self.orderID_finished.append(order_id)
         self.orderID_not_finished = list(set(self.order_dictionary.keys()) - set(self.orderID_finished))
     def status_of_programmer(self,programmer):
