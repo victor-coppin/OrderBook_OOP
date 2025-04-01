@@ -11,13 +11,13 @@ class Task:
         """
         Task to complete
         should provide a short description, your name and the estimated hours for completion(int).
+        Test are functional in the main program but as it raise ValueError, it prints the
+        "erroneous input" which override the default behaviour.
         """
-        # TODO: these test don't seems to work in main program, why ?
         if len(description.split()) < 20:
              self.__description = description
         else:
             raise ValueError("Description is too long ! Remember Agile best practice and keep it short.")
-
         if type(workload) == int:
             self.__workload = workload
         else:
@@ -51,7 +51,7 @@ class Task:
     def number_of_tasks(cls):
         return cls.__id_generator
 
-    @classmethod #provide just for the pytest part (force counter to 0)
+    @classmethod
     def id_generator_to_zero(cls):
         cls.__id_generator = 0
 
@@ -85,7 +85,7 @@ class OrderBook(Task):
         self.orderID_not_finished = []
     def add_order(self, description, programmer, workload):
         order = Task(description, programmer, workload)
-        self.order_dictionary[order.id_number] = order #TODO: add test to ckeck it fill the dictionary
+        self.order_dictionary[order.id_number] = order #TODO: add test to ckeck if it fill the dictionary
         if programmer not in self.order_dictionary_programmer.keys():
             self.order_dictionary_programmer[programmer] = [[order.id_number],0,1,0,workload] #TODO: add test to ckeck it fill the dictionary
         else:
@@ -124,7 +124,7 @@ class OrderBook(Task):
 
 
 # orders = OrderBook()
-# orders.add_order("program webstore", "Adele", 10)
+# orders.add_order("this is i hope a very very long task to do, because you have to program a new facebook and you should do it alone by yourself so i hope you could finished it in just 2 hours because if not you will be fired ", "Adele", 10)
 # orders.add_order("program mobile app for workload accounting", "Eric", 25)
 # orders.add_order("program app for practising mathematics", "Adele", 100)
 # orders.mark_finished(1)

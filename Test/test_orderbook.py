@@ -12,6 +12,7 @@ from classes import Task
 from classes import OrderBook
 
 #pytest.fixture avoid repetition inside the test, pass at argument of the test function
+
 @pytest.fixture
 def three_tasks():
     Task.id_generator_to_zero() #avoid mismatch for the id_key
@@ -24,32 +25,51 @@ def three_tasks():
 """
 Test part 1
 """
-# TODO: add test to ensure the incrementation is ok
-# TODO: add test to ensure the status of a task is NOT FINISHED when added
-def test_task_print_attributes(capsys,monkeypatch):
-    t1 = Task("program hello world","Eric",3) #create first instance part 1
-    monkeypatch.setattr(t1,"_Task__id_number", 1)
-    print(t1.id_number,t1.description,t1.programmer,t1.workload)
-    output = capsys.readouterr() #get the output of the print above
-    assert output.out == str(t1.id_number) + " program hello world Eric 3\n" #print auto create \n newline
+class TestTaskInstantiation:
+    """
+    This class test if the instantiation of the Task class works as expected:
+    method counter_id_generator_to_zero() force the class counter to 0
+    counter is incremented by one each time a new task is created
+    a new task is created with the status NOT_FINISHED
+    method is_finished switch a task to the FINISHED status
+    """
+    def test_counter_id_generator_to_zero(self,monkeypatch):
+        t1 = Task("program hello world", "Eric", 3)
+        Task.id_generator_to_zero()
+        assert Task.number_of_tasks() == 0
+    def test_counter_one_task(self):
+        Task.id_generator_to_zero()
+        t1 = Task("program orderbook", "victor", 15)
+        assert Task.number_of_tasks() == 1
+    def test_counter_two_tasks(self):
+        Task.id_generator_to_zero()
+        t1 = Task("program orderbook", "victor", 15)
+        t2 = Task("program test file for orderbook", "victor", 3)
+        assert Task.number_of_tasks() == 2
+    def test_is_finished(self,monkeypatch):
+        t1 = Task("program hello world", "Eric", 3)
+        assert t1.is_finished() is not True
+    def test_print_is_not_finished(self):
+        t1 = Task("program hello world", "Eric", 3)
+        t1.mark_finished()
+        assert t1.is_finished() is True
 
-def test_print_task(monkeypatch):
-    t1 = Task("program hello world", "Eric", 3)
-    monkeypatch.setattr(t1,"_Task__id_number",1)
-    monkeypatch.setattr(t1,"_Task__done_status","NOT FINISHED")
-    assert str(t1) == "1: program hello world (3 hours), programmer Eric NOT FINISHED"
+class TestTaskPrint:
+    """
+    Test print behavior of Task class as expected in part one
+    """
+    def test_task_print_attributes(self,capsys,monkeypatch):
+        t1 = Task("program hello world","Eric",3) #create first instance part 1
+        monkeypatch.setattr(t1,"_Task__id_number", 1)
+        print(t1.id_number,t1.description,t1.programmer,t1.workload)
+        output = capsys.readouterr() #get the output of the print above
+        assert output.out == str(t1.id_number) + " program hello world Eric 3\n" #print auto create \n newline
 
-def test_print_is_finished(monkeypatch):
-    t1 = Task("program hello world", "Eric", 3)
-    monkeypatch.setattr(t1,"_Task__done_status","Not FINISHED")
-    assert t1.is_finished() is not True
-
-def test_print_is_not_finished():
-    t1 = Task("program hello world", "Eric", 3)
-    t1.mark_finished()
-    assert t1.is_finished() is True
-
-
+    def test_print_task(self,monkeypatch):
+        t1 = Task("program hello world", "Eric", 3)
+        monkeypatch.setattr(t1,"_Task__id_number",1)
+        monkeypatch.setattr(t1,"_Task__done_status","NOT FINISHED")
+        assert str(t1) == "1: program hello world (3 hours), programmer Eric NOT FINISHED"
 """
 Test part 2
 """
