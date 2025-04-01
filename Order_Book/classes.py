@@ -2,7 +2,7 @@
 Class Task
 Models a single task in a software company's list of the tasks.
 """
-#TODO: check the comments (if missing or if not needed)
+
 class Task:
     __id_generator = 0 # class attribute that will be used to create a unique ID
     """__slots__ = ['description','workload','programmer','__done_status','id'] #avoid dynamic creation of attributes"""
@@ -24,20 +24,19 @@ class Task:
             raise ValueError("workload should be an integer")
 
         self.__programmer = programmer
-        # TODO: add test to ensure the incrementation is ok
+
         type(self).__id_generator += 1 # incrementation of the id_generator
         self.__id_number = type(self).__id_generator #type(self) is used in case class name is changed:i.e. avoid Task.id
-        # TODO: add test to ensure the status of a task is NOT FINISHED when added
-        self.__done_status = "NOT FINISHED" # think if better to stock as a boolean
 
+        self.__done_status = "NOT FINISHED"#hardcode the value of the status when initialize
+
+# Getter of the private attributes / no setters to avoid mistake
     @property #encapsulation
     def description(self):
         return self.__description
-
     @property
     def programmer(self):
         return self.__programmer
-
     @property
     def workload(self):
         return self.__workload
@@ -52,7 +51,7 @@ class Task:
     def number_of_tasks(cls):
         return cls.__id_generator
 
-    @classmethod #provide just for the pytestpart
+    @classmethod #provide just for the pytest part (force counter to 0)
     def id_generator_to_zero(cls):
         cls.__id_generator = 0
 
@@ -75,6 +74,8 @@ class Task:
 Class OrderBook
 The orderbook that used to store, add and query tasks 
 """
+
+
 class OrderBook(Task):
     def __init__(self):
         super().__init__(description="add description", programmer="add your name",workload=0)
@@ -118,25 +119,23 @@ class OrderBook(Task):
     def status_of_programmer(self,programmer):
         return tuple(self.order_dictionary_programmer[programmer][1:5])
 
-orders = OrderBook()
-orders.add_order("program webstore", "Adele", 10)
-orders.add_order("program mobile app for workload accounting", "Eric", 25)
-orders.add_order("program app for practising mathematics", "Adele", 100)
-orders.mark_finished(1)
-orders.mark_finished(2)
-print(orders.orderID_not_finished)
-not_finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_not_finished]
-for order in not_finished_tasks:
-    print(order)
-finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_finished]
-for order in finished_tasks:
-    print(order)
 
 
 
 
-
-
+# orders = OrderBook()
+# orders.add_order("program webstore", "Adele", 10)
+# orders.add_order("program mobile app for workload accounting", "Eric", 25)
+# orders.add_order("program app for practising mathematics", "Adele", 100)
+# orders.mark_finished(1)
+# orders.mark_finished(2)
+# print(orders.orderID_not_finished)
+# not_finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_not_finished]
+# for order in not_finished_tasks:
+#     print(order)
+# finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_finished]
+# for order in finished_tasks:
+#     print(order)
 # for order in orders.all_orders ():
 #     print(order)
 # print(orders.programmers_list_tasks())

@@ -1,7 +1,7 @@
 import sys
 import time
 from classes import OrderBook,Task
-#TODO: The script containing the same test code for class objects as shown in the examples as well as the final application program code to test Parts 6 and 7.
+
 #TODO: add comments
 #TODO: look if need to handle other errors
 #TODO: add part to save the orderbook in jason or other method (add a sub command)
@@ -9,9 +9,9 @@ from classes import OrderBook,Task
 #TODO: recheck all test
 #TODO: recheck all test
 if __name__ == "__main__":
-    orders = OrderBook() #TODO: add comments
-    Task.id_generator_to_zero() #TODO: add comments
-    while True:
+    orders = OrderBook() #instantiation of the order book
+    Task.id_generator_to_zero() #with a counter force to 0 if orders already created in class.py
+    while True: #initiate a loop while true : message with the commands will be print after each user's operations
         print(
         "******* Main_commands ********\n"
         "0 - Quit\n"
@@ -23,14 +23,14 @@ if __name__ == "__main__":
         "6 - status of programmer\n"
         "******************************"
         )
-        command = input("command: ")
+        command = input("command: ") #user input for the command
         if command == "0":
             confirm_quit = input("Are you sure you want to quit? (Y/n)")
             if confirm_quit == 'Y':
                 print("quitting")
-                time.sleep(1)
+                time.sleep(1) #time.sleep added for each output to let user time to see the answer
                 sys.exit()
-
+        #for each input, a try except block is added to avoid errors
         elif command == "1":
             description = input("description: ")
             try:
@@ -52,8 +52,7 @@ if __name__ == "__main__":
                     else:
                         print("added!")
                         time.sleep(2)
-            # add_other = input("do you want to continue to add another order? (Y/n)")
-            # if add_other == 'Y':
+
 
         elif command == "2":
             if len(orders.orderID_finished) == 0:
