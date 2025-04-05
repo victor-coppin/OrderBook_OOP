@@ -46,6 +46,7 @@ class TestTaskInstantiation:
         t1 = Task("program orderbook", "victor", 15)
         t2 = Task("program test file for orderbook", "victor", 3)
         assert Task.number_of_tasks() == 2
+    # "A task cannot be finished when it is created"
     def test_is_finished(self,monkeypatch):
         t1 = Task("program hello world", "Eric", 3)
         assert t1.is_finished() is not True
@@ -70,26 +71,60 @@ class TestTaskPrint:
         monkeypatch.setattr(t1,"_Task__id_number",1)
         monkeypatch.setattr(t1,"_Task__done_status","NOT FINISHED")
         assert str(t1) == "1: program hello world (3 hours), programmer Eric NOT FINISHED"
+
+#The state of a task (finished or not finished) can be checked with a function that returns a
+#Boolean value
+def test_is_finished_return_boolean():
+    t1 = Task("program hello world", "Eric", 3)
+    assert type(bool(t1.is_finished())) == bool
+
 """
 Test part 2
 """
-#TODO: test for the add mehtod
-def test_order_book_print_all_order(capsys,monkeypatch,three_tasks):
-    for order in three_tasks.all_orders():
-        print(order)
-    capture_print_output = capsys.readouterr()
-    assert (capture_print_output.out ==
-        ("1: program webstore (10 hours), programmer Adele NOT FINISHED\n"
-        "2: program mobile app for workload accounting (25 hours), programmer Eric NOT FINISHED\n"
-        "3: program app for practising mathematics (100 hours), programmer Adele NOT FINISHED\n"))
+class TestOrderBookAddOrder:
 
-def test_order_book_print_all_unique_programmer(capsys,three_tasks):
-    for programmer in three_tasks.programmer():
-        print(programmer)
-    capture_print_output = capsys.readouterr()
-    assert (capture_print_output.out ==
-        ("Adele\n"
-         "Eric\n"))
+    #test if the add_order method fill correctly the dictionary
+    def test_add_order(self,three_tasks):
+        orders_in_dict = len(three_tasks.order_dictionary.items())
+        assert orders_in_dict == 3
+        three_tasks.add_order("program webstore", "Adele", 10)
+        assert len(three_tasks.order_dictionary.items()) == orders_in_dict + 1
+
+    #test if the add_order method fill correctly the list of not finished tasks
+    def test_add_order_not_finished(self,three_tasks):
+        order_ids_in_not_finished_list = len(three_tasks.orderID_not_finished)
+        assert order_ids_in_not_finished_list == 3
+        three_tasks.add_order("program webstore", "Adele", 10)
+        assert len(three_tasks.orderID_not_finished) == order_ids_in_not_finished_list + 1
+        assert three_tasks.orderID_not_finished == [1,2,3,4]
+
+    #test if the add_order method fill correctly the list of programmers
+    def test_add_new_programmer(self,three_tasks):
+        programmers = three_tasks.order_dictionary_programmer.keys()
+        assert list(programmers) == ["Adele", "Eric"]
+        three_tasks.add_order("program webstore", "Adele", 10)
+        assert len(three_tasks.order_dictionary_programmer.items()) == 2
+        three_tasks.add_order("program webstore", "Anna", 10)
+        assert list(programmers) == ["Adele", "Eric","Anna"]
+
+
+class TestOrderPrint:
+    def test_order_book_print_all_order(self,capsys,monkeypatch,three_tasks):
+        for order in three_tasks.all_orders():
+            print(order)
+        capture_print_output = capsys.readouterr()
+        assert (capture_print_output.out ==
+            ("1: program webstore (10 hours), programmer Adele NOT FINISHED\n"
+            "2: program mobile app for workload accounting (25 hours), programmer Eric NOT FINISHED\n"
+            "3: program app for practising mathematics (100 hours), programmer Adele NOT FINISHED\n"))
+
+    def test_order_book_print_all_unique_programmer(self,capsys,three_tasks):
+        for programmer in three_tasks.programmer():
+            print(programmer)
+        capture_print_output = capsys.readouterr()
+        assert (capture_print_output.out ==
+            ("Adele\n"
+             "Eric\n"))
 
 """
 Test part 3
