@@ -171,7 +171,7 @@ class OrderBook(Task):
     def status_of_programmer(self,programmer):
         return tuple(self.order_dictionary_programmer[programmer][1:5])
 
-
+    #save the current instantiation of the orderbook as an object
     def save_orderbook(self,orderbook_backup = "orderbook.pkl"):
         with open(orderbook_backup,"wb") as save:
             pickle.dump(self, save)

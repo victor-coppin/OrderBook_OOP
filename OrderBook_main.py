@@ -84,7 +84,7 @@ if __name__ == "__main__":
                 try:
                     orderbook_backup = "orderbook.pkl"
                     orders.save_orderbook(orderbook_backup) #try pickle to save the object instance
-                except ValueError:
+                except Exception:
                     print("erroneous input")
                 else:
                     print("saved!")
@@ -94,7 +94,7 @@ if __name__ == "__main__":
                 try:
                     orderbook_backup = "orderbook.pkl"
                     orders = orders.load_orderbook(orderbook_backup)
-                except ValueError:
+                except Exception:
                     print("erroneous input")
                 else:
                     print("loaded!")
