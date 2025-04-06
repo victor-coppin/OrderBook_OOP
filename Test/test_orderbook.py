@@ -158,11 +158,4 @@ def test_status_of_programmer(three_tasks):
     assert three_tasks.status_of_programmer("Adele") == (1,1,10,100)
     assert three_tasks.status_of_programmer("Eric") == (1,0, 25,0)
 
-"""
-Test part 6
-"""
-#TODO: add test for part 6
-"""
-Test part 7
-"""
-#TODO: add test for part 7
+

@@ -2,7 +2,7 @@ import sys
 import os
 import time
 from classes import OrderBook,Task
-import pickle
+
 
 #TODO: recheck all test
 if __name__ == "__main__":
