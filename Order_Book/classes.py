@@ -1,4 +1,5 @@
 import math
+import pickle
 """
 Class Task
 Models a single task in a software company's list of the tasks.
@@ -171,3 +172,12 @@ class OrderBook(Task):
         return tuple(self.order_dictionary_programmer[programmer][1:5])
 
 
+    def save_orderbook(self,orderbook_backup = "orderbook.pkl"):
+        with open(orderbook_backup,"wb") as save:
+            pickle.dump(self, save)
+            save.close()
+
+    @classmethod
+    def load_orderbook(cls,orderbook_backup = "orders.pkl"):
+        with open(orderbook_backup,"rb") as load:
+            return pickle.load(load)

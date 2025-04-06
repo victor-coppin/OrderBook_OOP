@@ -1,7 +1,8 @@
 import sys
+import os
 import time
 from classes import OrderBook,Task
-
+import pickle
 
 #TODO: recheck all test
 if __name__ == "__main__":
@@ -18,11 +19,13 @@ if __name__ == "__main__":
         "4 - mark task as finished\n"
         "5 - programmers\n"
         "6 - status of programmer\n"
+        "7 - save orderbook\n"
+        "8 - load orderbook\n"
         "******************************"
         )
         command = input("command: ")
         try:
-            int(command) in [1, 2, 3, 4, 5, 6]
+            int(command) in [1, 2, 3, 4, 5, 6, 7, 8]
         except ValueError:
             print("erroneous input")
         else:
@@ -77,6 +80,26 @@ if __name__ == "__main__":
                 except KeyError:
                     print("Erroneous input")
                     time.sleep(2)
+            elif command == "7":
+                try:
+                    orderbook_backup = "orderbook.pkl"
+                    orders.save_orderbook(orderbook_backup) #try pickle to save the object instance
+                except ValueError:
+                    print("erroneous input")
+                else:
+                    print("saved!")
+                    print(os.path.abspath(orderbook_backup))
+                    time.sleep(2)
+            elif command == "8":
+                try:
+                    orderbook_backup = "orderbook.pkl"
+                    orders = orders.load_orderbook(orderbook_backup)
+                except ValueError:
+                    print("erroneous input")
+                else:
+                    print("loaded!")
+                    time.sleep(2)
+
 
 """
 For test
