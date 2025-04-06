@@ -15,8 +15,8 @@ from classes import OrderBook
 
 @pytest.fixture
 def three_tasks():
-    Task.id_generator_to_zero() #avoid mismatch for the id_key
     orders = OrderBook()
+    Task.id_generator_to_zero()#avoid mismatch for the id_key
     orders.add_order("program webstore", "Adele", 10)
     orders.add_order("program mobile app for workload accounting", "Eric", 25)
     orders.add_order("program app for practising mathematics", "Adele", 100)
@@ -33,7 +33,7 @@ class TestTaskInstantiation:
     a new task is created with the status NOT_FINISHED
     method is_finished switch a task to the FINISHED status
     """
-    def test_counter_id_generator_to_zero(self,monkeypatch):
+    def test_counter_id_generator_to_zero(self):
         t1 = Task("program hello world", "Eric", 3)
         Task.id_generator_to_zero()
         assert Task.number_of_tasks() == 0
@@ -47,7 +47,7 @@ class TestTaskInstantiation:
         t2 = Task("program test file for orderbook", "victor", 3)
         assert Task.number_of_tasks() == 2
     # "A task cannot be finished when it is created"
-    def test_is_finished(self,monkeypatch):
+    def test_is_finished(self):
         t1 = Task("program hello world", "Eric", 3)
         assert t1.is_finished() is not True
     def test_print_is_not_finished(self):
@@ -62,9 +62,9 @@ class TestTaskPrint:
     def test_task_print_attributes(self,capsys,monkeypatch):
         t1 = Task("program hello world","Eric",3) #create first instance part 1
         monkeypatch.setattr(t1,"_Task__id_number", 1)
-        print(t1.id_number,t1.description,t1.programmer,t1.workload)
+        print(t1.id,t1.description,t1.programmer,t1.workload)
         output = capsys.readouterr() #get the output of the print above
-        assert output.out == str(t1.id_number) + " program hello world Eric 3\n" #print auto create \n newline
+        assert output.out == str(t1.id) + " program hello world Eric 3\n" #print auto create \n newline
 
     def test_print_task(self,monkeypatch):
         t1 = Task("program hello world", "Eric", 3)
@@ -109,7 +109,7 @@ class TestOrderBookAddOrder:
 
 
 class TestOrderPrint:
-    def test_order_book_print_all_order(self,capsys,monkeypatch,three_tasks):
+    def test_order_book_print_all_order(self,capsys,three_tasks):
         for order in three_tasks.all_orders():
             print(order)
         capture_print_output = capsys.readouterr()
@@ -134,7 +134,7 @@ Test part 3
 """
 Test part 4
 """
-def test_order_book_mark_finished_not_finished(capsys,monkeypatch,three_tasks):
+def test_order_book_mark_finished_not_finished(capsys,three_tasks):
     three_tasks.mark_finished(1)
     three_tasks.mark_finished(2)
     for order in three_tasks.all_orders():
@@ -149,19 +149,14 @@ def test_order_book_mark_finished_not_finished(capsys,monkeypatch,three_tasks):
 """
 Test part 5
 """
-def test_status_of_programmer():
-    Task.id_generator_to_zero()
-    orders2 = OrderBook()
-    orders2.add_order("program webstore", "Adele", 10)
-    assert orders2.status_of_programmer("Adele") == (0,1,0,10)
-    orders2.add_order("program mobile app for workload accounting", "Eric", 25)
-    orders2.add_order("program app for practising mathematics", "Adele", 100)
-    assert orders2.status_of_programmer("Adele") == (0,2,0,110)
-    assert orders2.status_of_programmer("Eric") == (0,1,0,25)
-    orders2.mark_finished(1)
-    orders2.mark_finished(2)
-    assert orders2.status_of_programmer("Adele") == (1,1,10,100)
-    assert orders2.status_of_programmer("Eric") == (1,0, 25,0)
+def test_status_of_programmer(three_tasks):
+
+    assert three_tasks.status_of_programmer("Adele") == (0,2,0,110)
+    assert three_tasks.status_of_programmer("Eric") == (0,1,0,25)
+    three_tasks.mark_finished(1)
+    three_tasks.mark_finished(2)
+    assert three_tasks.status_of_programmer("Adele") == (1,1,10,100)
+    assert three_tasks.status_of_programmer("Eric") == (1,0, 25,0)
 
 """
 Test part 6

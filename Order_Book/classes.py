@@ -1,3 +1,4 @@
+import math
 """
 Class Task
 Models a single task in a software company's list of the tasks.
@@ -8,23 +9,29 @@ class Task():
         """
         Task to complete
         should provide a short description, your name and the estimated hours for completion(int).
+        description : a short description of the task, less than 12 worlds
+        programmer: first-name of the programmer, must be without space
+        workload: workload of the task, int or float
+        Handle exceptions :
+        While instantiate, check the type of each argument
         """
         #Description
-        if 0< len(description.split()) < 12:
+        if 0< len(description.split()) < 12: #avoid long descriptions
             self.__description = description
         else:
-            raise ValueError("erroneous input")
+            raise ValueError("erroneous input: need a short ( <12 words) description")
         # Workload
         if isinstance(workload, int):
             self.__workload = workload
-        elif isinstance(workload, str): #try to convert text to int, ex 4,4 => 4
-            try :
+        elif isinstance(workload, str): #if strings, try to convert text to float, ex 4,4 => 4.4
+            try:
                 workload = workload.replace(',', '.')
-                self.__workload= round(float(workload))
-            except Exception:
-                raise Exception("erroneous input")
+                workload = float(workload)
+            except (TypeError, ValueError):
+                raise ValueError("erroneous input: workload must be int or float")
+            else: self.__workload = workload
         else:
-            raise ValueError("erroneous input")
+            raise ValueError("erroneous input: workload must be a number")
         #Programmer
         if programmer is None:
             raise ValueError("erroneous input")
@@ -48,13 +55,16 @@ class Task():
     @property
     def workload(self):
         return self.__workload
+    @workload.setter
+    def workload(self, value):
+        self.__workload = value
     @property
-    def id_number(self):
+    def id(self):
         return self.__id_number
     """
     Class Methods
     """
-    @classmethod # class method that allow to use the following method without reference to an instance.
+    @classmethod
     def number_of_tasks(cls):
         return cls.__id_generator
     @classmethod
@@ -69,13 +79,16 @@ class Task():
     def mark_finished(self):
         self.__done_status = "FINISHED"
 
+    def __repr__(self):
+        return f'Task({self.description}, {self.programmer}, {self.workload})'
+
     def __str__(self):
         if self.workload == 1:
             return (str(self.__id_number) + ": " + self.description + " (" + str(self.workload) + " hour),"
-                    + " programmer " + self.programmer + " " + self.__done_status)
+                    + " programmer " + self.__programmer + " " + self.__done_status)
         else:
             return (str(self.__id_number) + ": " + self.description + " (" + str(self.workload) + " hours),"
-                + " programmer " + self.programmer +" "+self.__done_status)
+                    + " programmer " + self.__programmer + " " + self.__done_status)
 
 
 
@@ -84,27 +97,36 @@ Class OrderBook
 The orderbook that used to store, add and query tasks 
 """
 class OrderBook(Task):
-    def __init__(self):
-        super().__init__(description="add description", programmer="add your name",workload=0)
+    def __init__(self,description="add description", programmer="add your first-name",workload="0"):
+        super().__init__(description, programmer,workload)
         self.order_dictionary = {} #contains all the order's instances with the order.id as a key
         self.order_dictionary_programmer = {} #contain the numbers of finished, not-finished, and respective hours to complete
         self.orderID_finished = [] #list all finished. Filled within the mark_finished method
         self.orderID_not_finished = []
-
+        self.__id_generator = 0 #this implies that each orderbook have its own counter
     def add_order(self, description, programmer, workload):
-        order = Task(description, programmer, workload)
-        self.order_dictionary[order.id_number] = order #add the new order in the dictionary with the key as the id
-        self.orderID_not_finished.append(order.id_number) #add ID of the task to the orderID_not_finished list
-        if programmer not in self.order_dictionary_programmer.keys():
-            self.order_dictionary_programmer[programmer] = [[order.id_number],0,1,0,order.workload]
+        if isinstance(workload,str):
+            try:
+                workload = workload.replace(',', '.')
+                workload = float(workload)
+                workload = math.ceil(workload) #round to the up : 3,4 => 4
+            except (TypeError, ValueError):
+                raise ValueError("erroneous input: workload must be int or float")
+        elif isinstance(workload,int or float):
+            workload = math.ceil(workload)
         else:
-            self.order_dictionary_programmer[programmer][0].append(order.id_number)
+            raise ValueError("erroneous input: workload must be a int or float")
+        order = Task(description, programmer, workload)
+        self.order_dictionary[order.id] = order #add the new order in the dictionary with the key as the id
+        self.orderID_not_finished.append(order.id) #add ID of the task to the orderID_not_finished list
+        if programmer not in self.order_dictionary_programmer.keys():
+            self.order_dictionary_programmer[programmer] = [[order.id],0,1,0,workload]
+        else:
+            self.order_dictionary_programmer[programmer][0].append(order.id)
             self.order_dictionary_programmer[programmer][2] += 1
-            self.order_dictionary_programmer[programmer][4] += order.workload
+            self.order_dictionary_programmer[programmer][4] += workload
         return order
 
-    def __str__(self,programmer_orders = False):
-        return super().__str__()
 
     def all_orders(self):
         return self.order_dictionary.values()
@@ -126,8 +148,8 @@ class OrderBook(Task):
         workload = self.order_dictionary[order_id].workload
         self.order_dictionary_programmer[programmer][1] += 1
         self.order_dictionary_programmer[programmer][2] -= 1
-        self.order_dictionary_programmer[programmer][3] += int(workload)
-        self.order_dictionary_programmer[programmer][4] -= int(workload)
+        self.order_dictionary_programmer[programmer][3] += workload
+        self.order_dictionary_programmer[programmer][4] -= workload
         self.orderID_finished.append(order_id) # fill a list with the id of finished task
         self.orderID_not_finished.remove(order_id)
 
@@ -149,32 +171,3 @@ class OrderBook(Task):
         return tuple(self.order_dictionary_programmer[programmer][1:5])
 
 
-
-print(int(round(float(0.4))))
-
-# orders = OrderBook()
-# orders.add_order("this is i hope a very very long be ", "Adele", 10)
-# orders.add_order("program mobile app for workload accounting", "Eric", 25)
-# orders.add_order("program app for practising mathematics", "Adele", 100)
-# print(orders.order_dictionary_programmer.keys())
-# print(orders.orderID_not_finished)
-# not_finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_not_finished]
-# for order in not_finished_tasks:
-#     print(order)
-# finished_tasks = [orders.order_dictionary[id_num] for id_num in orders.orderID_finished]
-# for order in finished_tasks:
-#     print(order)
-# for order in orders.all_orders ():
-#     print(order)
-# print(orders.programmers_list_tasks())
-# print(orders.order_dictionary_programmer)
-# orders.mark_finished(1)
-# orders.mark_finished(2)
-# print(orders.order_dictionary_programmer)
-# for order in orders.all_orders ():
-#     print(order)
-# print(orders.status_of_programmer("Adele"))
-# print(orders.status_of_programmer("Eric"))
-# for programmer in orders.programmer():
-#     print(programmer)
-# print(orders.programmers_list_tasks())
