@@ -55,8 +55,7 @@ Key Methods:
 - status_of_programmer(): Provides programmer metrics
 - save_orderbook()/load_orderbook(): Serialization methods
 
-<img alt="Diagram_OrderBook.drawio.png" height="300" src="Diagram_OrderBook.drawio.png"
-width="500"/>
+![Diagram_OrderBook.jpg](Diagram_OrderBook.jpg)
 
 ### Command-Line Interface (CLI)
 Command Menu
